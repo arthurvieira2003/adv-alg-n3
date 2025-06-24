@@ -129,12 +129,66 @@ celerybeat.pid
 
 # Environments
 .env
+.env.local
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+
+# Knowledge Graph Project Specific
+# API Keys and sensitive configuration
+*.key
+*.secret
+config_local.py
+secrets.json
+
+# Data files (if containing sensitive information)
+# Uncomment if your data contains sensitive information
+# data/*.csv
+# data/*.json
+# data/*.txt
+
+# Generated knowledge graph files
+output/
+exports/
+visualization_output/
+*.html
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# LLM and AI model cache
+model_cache/
+.cache/
+transformers_cache/
+
+# Streamlit specific
+.streamlit/
+streamlit_cache/
+
+# Jupyter notebook outputs
+*.ipynb
+.ipynb_checkpoints/
+
+# Debug and temporary files
+debug_*.py
+temp_*.py
+test_output/
+logs/
+*.log
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Spyder project settings
 .spyderproject

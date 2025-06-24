@@ -1,0 +1,19 @@
+id,type,name,species,homeworld,affiliation,force_sensitive,description,climate,terrain,population,alignment,manufacturer
+luke_skywalker,Character,Luke Skywalker,Human,Tatooine,Rebel Alliance,True,Jedi Knight who destroyed the Death Star,,,,,
+darth_vader,Character,Darth Vader,Human,Tatooine,Galactic Empire,True,"Sith Lord, former Jedi Anakin Skywalker",,,,,
+princess_leia,Character,Princess Leia Organa,Human,Alderaan,Rebel Alliance,True,Leader of the Rebel Alliance,,,,,
+han_solo,Character,Han Solo,Human,Corellia,Rebel Alliance,False,Smuggler and pilot of the Millennium Falcon,,,,,
+obi_wan_kenobi,Character,Obi-Wan Kenobi,Human,Stewjon,Jedi Order,True,Jedi Master and mentor to Luke Skywalker,,,,,
+yoda,Character,Yoda,Unknown,Unknown,Jedi Order,True,Grand Master of the Jedi Order,,,,,
+tatooine,Planet,Tatooine,,,,,Desert planet with twin suns,Arid,Desert,200000,,
+alderaan,Planet,Alderaan,,,,,Peaceful planet destroyed by Death Star,Temperate,"Grasslands, mountains",2000000000,,
+coruscant,Planet,Coruscant,,,,,Capital of the Galactic Republic and Empire,Temperate,Cityscape,1000000000000,,
+dagobah,Planet,Dagobah,,,,,Swamp planet where Yoda lived in exile,Murky,"Swamp, jungles",Unknown,,
+corellia,Planet,Corellia,,,,,Industrial world known for shipbuilding and smugglers,Temperate,"Plains, urban areas",3000000000,,
+jedi_order,Religious Order,Jedi Order,,,,,Ancient order of Force-sensitive peacekeepers,,,,Light Side,
+sith,Religious Order,Sith,,,,,Ancient order of Force-sensitive dark warriors,,,,Dark Side,
+rebel_alliance,Military Organization,Rebel Alliance,,,,,Resistance movement against the Galactic Empire,,,,Good,
+galactic_empire,Government,Galactic Empire,,,,,Authoritarian regime ruling the galaxy,,,,Evil,
+millennium_falcon,Light Freighter,Millennium Falcon,,,,,Fast smuggling ship owned by Han Solo,,,,,Corellian Engineering Corporation
+death_star,Space Station,Death Star,,,,,Moon-sized battle station with planet-destroying capability,,,,,Galactic Empire
+x_wing,Starfighter,X-wing Starfighter,,,,,Versatile starfighter used by the Rebel Alliance,,,,,Incom Corporation

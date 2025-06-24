@@ -1,0 +1,603 @@
+{
+  "entities": {
+    "luke_skywalker": {
+      "type": "Character",
+      "properties": {
+        "id": "luke_skywalker",
+        "name": "Luke Skywalker",
+        "species": "Human",
+        "homeworld": "Tatooine",
+        "affiliation": "Rebel Alliance",
+        "force_sensitive": true,
+        "description": "Jedi Knight who destroyed the Death Star"
+      }
+    },
+    "darth_vader": {
+      "type": "Character",
+      "properties": {
+        "id": "darth_vader",
+        "name": "Darth Vader",
+        "species": "Human",
+        "homeworld": "Tatooine",
+        "affiliation": "Galactic Empire",
+        "force_sensitive": true,
+        "description": "Sith Lord, former Jedi Anakin Skywalker"
+      }
+    },
+    "princess_leia": {
+      "type": "Character",
+      "properties": {
+        "id": "princess_leia",
+        "name": "Princess Leia Organa",
+        "species": "Human",
+        "homeworld": "Alderaan",
+        "affiliation": "Rebel Alliance",
+        "force_sensitive": true,
+        "description": "Leader of the Rebel Alliance"
+      }
+    },
+    "han_solo": {
+      "type": "Character",
+      "properties": {
+        "id": "han_solo",
+        "name": "Han Solo",
+        "species": "Human",
+        "homeworld": "Corellia",
+        "affiliation": "Rebel Alliance",
+        "force_sensitive": false,
+        "description": "Smuggler and pilot of the Millennium Falcon"
+      }
+    },
+    "obi_wan_kenobi": {
+      "type": "Character",
+      "properties": {
+        "id": "obi_wan_kenobi",
+        "name": "Obi-Wan Kenobi",
+        "species": "Human",
+        "homeworld": "Stewjon",
+        "affiliation": "Jedi Order",
+        "force_sensitive": true,
+        "description": "Jedi Master and mentor to Luke Skywalker"
+      }
+    },
+    "yoda": {
+      "type": "Character",
+      "properties": {
+        "id": "yoda",
+        "name": "Yoda",
+        "species": "Unknown",
+        "homeworld": "Unknown",
+        "affiliation": "Jedi Order",
+        "force_sensitive": true,
+        "description": "Grand Master of the Jedi Order"
+      }
+    },
+    "tatooine": {
+      "type": "Planet",
+      "properties": {
+        "id": "tatooine",
+        "name": "Tatooine",
+        "climate": "Arid",
+        "terrain": "Desert",
+        "population": "200000",
+        "description": "Desert planet with twin suns"
+      }
+    },
+    "alderaan": {
+      "type": "Planet",
+      "properties": {
+        "id": "alderaan",
+        "name": "Alderaan",
+        "climate": "Temperate",
+        "terrain": "Grasslands, mountains",
+        "population": "2000000000",
+        "description": "Peaceful planet destroyed by Death Star"
+      }
+    },
+    "coruscant": {
+      "type": "Planet",
+      "properties": {
+        "id": "coruscant",
+        "name": "Coruscant",
+        "climate": "Temperate",
+        "terrain": "Cityscape",
+        "population": "1000000000000",
+        "description": "Capital of the Galactic Republic and Empire"
+      }
+    },
+    "dagobah": {
+      "type": "Planet",
+      "properties": {
+        "id": "dagobah",
+        "name": "Dagobah",
+        "climate": "Murky",
+        "terrain": "Swamp, jungles",
+        "population": "Unknown",
+        "description": "Swamp planet where Yoda lived in exile"
+      }
+    },
+    "corellia": {
+      "type": "Planet",
+      "properties": {
+        "id": "corellia",
+        "name": "Corellia",
+        "climate": "Temperate",
+        "terrain": "Plains, urban areas",
+        "population": "3000000000",
+        "description": "Industrial world known for shipbuilding and smugglers"
+      }
+    },
+    "jedi_order": {
+      "type": "Organization",
+      "properties": {
+        "id": "jedi_order",
+        "name": "Jedi Order",
+        "type": "Religious Order",
+        "alignment": "Light Side",
+        "description": "Ancient order of Force-sensitive peacekeepers"
+      }
+    },
+    "sith": {
+      "type": "Organization",
+      "properties": {
+        "id": "sith",
+        "name": "Sith",
+        "type": "Religious Order",
+        "alignment": "Dark Side",
+        "description": "Ancient order of Force-sensitive dark warriors"
+      }
+    },
+    "rebel_alliance": {
+      "type": "Organization",
+      "properties": {
+        "id": "rebel_alliance",
+        "name": "Rebel Alliance",
+        "type": "Military Organization",
+        "alignment": "Good",
+        "description": "Resistance movement against the Galactic Empire"
+      }
+    },
+    "galactic_empire": {
+      "type": "Organization",
+      "properties": {
+        "id": "galactic_empire",
+        "name": "Galactic Empire",
+        "type": "Government",
+        "alignment": "Evil",
+        "description": "Authoritarian regime ruling the galaxy"
+      }
+    },
+    "millennium_falcon": {
+      "type": "Vehicle",
+      "properties": {
+        "id": "millennium_falcon",
+        "name": "Millennium Falcon",
+        "type": "Light Freighter",
+        "manufacturer": "Corellian Engineering Corporation",
+        "description": "Fast smuggling ship owned by Han Solo"
+      }
+    },
+    "death_star": {
+      "type": "Vehicle",
+      "properties": {
+        "id": "death_star",
+        "name": "Death Star",
+        "type": "Space Station",
+        "manufacturer": "Galactic Empire",
+        "description": "Moon-sized battle station with planet-destroying capability"
+      }
+    },
+    "x_wing": {
+      "type": "Vehicle",
+      "properties": {
+        "id": "x_wing",
+        "name": "X-wing Starfighter",
+        "type": "Starfighter",
+        "manufacturer": "Incom Corporation",
+        "description": "Versatile starfighter used by the Rebel Alliance"
+      }
+    }
+  },
+  "relationships": [
+    {
+      "source": "darth_vader",
+      "target": "luke_skywalker",
+      "type": "FATHER_OF",
+      "properties": {
+        "relationship": "father-son"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "princess_leia",
+      "type": "FATHER_OF",
+      "properties": {
+        "relationship": "father-daughter"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "princess_leia",
+      "type": "SIBLING_OF",
+      "properties": {
+        "relationship": "twin siblings"
+      }
+    },
+    {
+      "source": "obi_wan_kenobi",
+      "target": "luke_skywalker",
+      "type": "MENTOR_OF",
+      "properties": {
+        "relationship": "Jedi training"
+      }
+    },
+    {
+      "source": "yoda",
+      "target": "luke_skywalker",
+      "type": "MENTOR_OF",
+      "properties": {
+        "relationship": "Jedi training"
+      }
+    },
+    {
+      "source": "obi_wan_kenobi",
+      "target": "darth_vader",
+      "type": "FORMER_MENTOR_OF",
+      "properties": {
+        "relationship": "former Padawan"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "tatooine",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "tatooine",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "princess_leia",
+      "target": "alderaan",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "han_solo",
+      "target": "corellia",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "jedi_order",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "Jedi Knight"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "rebel_alliance",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "pilot"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "sith",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "Sith Lord"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "galactic_empire",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "enforcer"
+      }
+    },
+    {
+      "source": "princess_leia",
+      "target": "rebel_alliance",
+      "type": "LEADER_OF",
+      "properties": {
+        "relationship": "leader"
+      }
+    },
+    {
+      "source": "han_solo",
+      "target": "rebel_alliance",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "smuggler"
+      }
+    },
+    {
+      "source": "obi_wan_kenobi",
+      "target": "jedi_order",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "Jedi Master"
+      }
+    },
+    {
+      "source": "yoda",
+      "target": "jedi_order",
+      "type": "LEADER_OF",
+      "properties": {
+        "relationship": "Grand Master"
+      }
+    },
+    {
+      "source": "han_solo",
+      "target": "millennium_falcon",
+      "type": "OWNS",
+      "properties": {
+        "relationship": "pilot and owner"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "x_wing",
+      "type": "PILOTS",
+      "properties": {
+        "relationship": "pilot"
+      }
+    },
+    {
+      "source": "galactic_empire",
+      "target": "death_star",
+      "type": "OWNS",
+      "properties": {
+        "relationship": "built and operated"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "death_star",
+      "type": "DESTROYED",
+      "properties": {
+        "event": "Battle of Yavin"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "obi_wan_kenobi",
+      "type": "KILLED",
+      "properties": {
+        "event": "Death Star duel"
+      }
+    },
+    {
+      "source": "yoda",
+      "target": "dagobah",
+      "type": "LIVED_ON",
+      "properties": {
+        "relationship": "exile location"
+      }
+    },
+    {
+      "source": "galactic_empire",
+      "target": "coruscant",
+      "type": "CAPITAL_AT",
+      "properties": {
+        "relationship": "seat of power"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "luke_skywalker",
+      "type": "FATHER_OF",
+      "properties": {
+        "relationship": "father-son"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "princess_leia",
+      "type": "FATHER_OF",
+      "properties": {
+        "relationship": "father-daughter"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "princess_leia",
+      "type": "SIBLING_OF",
+      "properties": {
+        "relationship": "twin siblings"
+      }
+    },
+    {
+      "source": "obi_wan_kenobi",
+      "target": "luke_skywalker",
+      "type": "MENTOR_OF",
+      "properties": {
+        "relationship": "Jedi training"
+      }
+    },
+    {
+      "source": "yoda",
+      "target": "luke_skywalker",
+      "type": "MENTOR_OF",
+      "properties": {
+        "relationship": "Jedi training"
+      }
+    },
+    {
+      "source": "obi_wan_kenobi",
+      "target": "darth_vader",
+      "type": "FORMER_MENTOR_OF",
+      "properties": {
+        "relationship": "former Padawan"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "tatooine",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "tatooine",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "princess_leia",
+      "target": "alderaan",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "han_solo",
+      "target": "corellia",
+      "type": "BORN_ON",
+      "properties": {
+        "relationship": "homeworld"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "jedi_order",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "Jedi Knight"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "rebel_alliance",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "pilot"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "sith",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "Sith Lord"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "galactic_empire",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "enforcer"
+      }
+    },
+    {
+      "source": "princess_leia",
+      "target": "rebel_alliance",
+      "type": "LEADER_OF",
+      "properties": {
+        "relationship": "leader"
+      }
+    },
+    {
+      "source": "han_solo",
+      "target": "rebel_alliance",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "smuggler"
+      }
+    },
+    {
+      "source": "obi_wan_kenobi",
+      "target": "jedi_order",
+      "type": "MEMBER_OF",
+      "properties": {
+        "relationship": "Jedi Master"
+      }
+    },
+    {
+      "source": "yoda",
+      "target": "jedi_order",
+      "type": "LEADER_OF",
+      "properties": {
+        "relationship": "Grand Master"
+      }
+    },
+    {
+      "source": "han_solo",
+      "target": "millennium_falcon",
+      "type": "OWNS",
+      "properties": {
+        "relationship": "pilot and owner"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "x_wing",
+      "type": "PILOTS",
+      "properties": {
+        "relationship": "pilot"
+      }
+    },
+    {
+      "source": "galactic_empire",
+      "target": "death_star",
+      "type": "OWNS",
+      "properties": {
+        "relationship": "built and operated"
+      }
+    },
+    {
+      "source": "luke_skywalker",
+      "target": "death_star",
+      "type": "DESTROYED",
+      "properties": {
+        "event": "Battle of Yavin"
+      }
+    },
+    {
+      "source": "darth_vader",
+      "target": "obi_wan_kenobi",
+      "type": "KILLED",
+      "properties": {
+        "event": "Death Star duel"
+      }
+    },
+    {
+      "source": "yoda",
+      "target": "dagobah",
+      "type": "LIVED_ON",
+      "properties": {
+        "relationship": "exile location"
+      }
+    },
+    {
+      "source": "galactic_empire",
+      "target": "coruscant",
+      "type": "CAPITAL_AT",
+      "properties": {
+        "relationship": "seat of power"
+      }
+    }
+  ]
+}

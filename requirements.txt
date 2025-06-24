@@ -1,0 +1,24 @@
+# Core dependencies
+networkx>=3.0,<4.0
+langchain>=0.1.0,<0.2.0
+langchain-google-genai>=0.0.6
+langchain-community>=0.0.10
+google-generativeai>=0.3.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization
+matplotlib==3.8.2
+plotly==5.17.0
+streamlit==1.29.0
+
+# Vector store and embeddings (simplified for compatibility)
+# Note: faiss-cpu removed due to Windows compilation issues
+# Using basic text similarity instead
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+json5==0.9.14
