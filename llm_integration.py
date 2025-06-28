@@ -9,9 +9,23 @@ from langchain.schema import Document
 from typing import List, Dict, Any, Optional
 import json
 import re
+import asyncio
+import threading
 from difflib import SequenceMatcher
 from knowledge_graph import KnowledgeGraph, Entity, Relationship
 from config import Config
+
+def ensure_event_loop():
+    """Garante que existe um event loop na thread atual"""
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_closed():
+            raise RuntimeError("Event loop is closed")
+    except RuntimeError:
+        # Criar novo event loop se não existir
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    return loop
 
 class SimpleVectorStore:
     """Vector store simples usando similaridade de texto"""
@@ -46,17 +60,45 @@ class GraphRAGSystem:
     
     def __init__(self, knowledge_graph: KnowledgeGraph):
         self.kg = knowledge_graph
-        self.llm = ChatGoogleGenerativeAI(
-            model=Config.LLM_MODEL,
-            temperature=Config.LLM_TEMPERATURE,
-            google_api_key=Config.GOOGLE_API_KEY
-        )
-        self.embeddings = GoogleGenerativeAIEmbeddings(
-            model=Config.EMBEDDING_MODEL,
-            google_api_key=Config.GOOGLE_API_KEY
-        )
+        self._llm = None
+        self._embeddings = None
         self.vector_store = None
         self.qa_chain = None
+        
+    @property
+    def llm(self):
+        """Lazy initialization do LLM"""
+        if self._llm is None:
+            try:
+                # Garantir que existe um event loop
+                ensure_event_loop()
+                
+                self._llm = ChatGoogleGenerativeAI(
+                    model=Config.LLM_MODEL,
+                    temperature=Config.LLM_TEMPERATURE,
+                    google_api_key=Config.GOOGLE_API_KEY
+                )
+            except Exception as e:
+                print(f"Erro ao inicializar LLM: {e}")
+                raise
+        return self._llm
+        
+    @property
+    def embeddings(self):
+        """Lazy initialization dos embeddings"""
+        if self._embeddings is None:
+            try:
+                # Garantir que existe um event loop
+                ensure_event_loop()
+                
+                self._embeddings = GoogleGenerativeAIEmbeddings(
+                    model=Config.EMBEDDING_MODEL,
+                    google_api_key=Config.GOOGLE_API_KEY
+                )
+            except Exception as e:
+                print(f"Erro ao inicializar embeddings: {e}")
+                raise
+        return self._embeddings
         
     def create_documents_from_graph(self) -> List[Document]:
         """Converte o grafo em documentos para o vector store"""

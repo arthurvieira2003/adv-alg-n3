@@ -11,7 +11,7 @@ import json
 # Configuração da página
 st.set_page_config(
     page_title="Knowledge Graph com LLM",
-    page_icon="🌌",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -41,7 +41,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Título principal
-st.markdown('<h1 class="main-header">🌌 Knowledge Graph Star Wars</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Knowledge Graph Star Wars</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align: center; font-size: 1.2rem; color: #666;">Sistema RAG com NetworkX + LangChain para consultas em linguagem natural</p>', unsafe_allow_html=True)
 
 # Inicialização do estado da sessão
@@ -54,7 +54,7 @@ if 'query_processor' not in st.session_state:
 
 # Sidebar
 with st.sidebar:
-    st.header("⚙️ Configurações")
+    st.header("Configurações")
     
     # Verificar se a API key está configurada
     api_key = st.text_input(
@@ -70,68 +70,58 @@ with st.sidebar:
     st.divider()
     
     # Carregar dados
-    st.subheader("📊 Dados")
+    st.subheader("Dados")
     
-    if st.button("🚀 Carregar Dados Star Wars", use_container_width=True):
+    if st.button("Carregar Dados Star Wars", use_container_width=True):
         with st.spinner("Carregando dados..."):
-            loader = StarWarsDataLoader()
-            st.session_state.kg = loader.create_sample_data()
-            
-            if api_key:
-                st.session_state.rag_system = GraphRAGSystem(st.session_state.kg)
-                st.session_state.query_processor = GraphQueryProcessor(st.session_state.kg)
-            
-        st.success("✅ Dados carregados com sucesso!")
-        st.rerun()
-    
-    # Upload de arquivo
-    st.subheader("📁 Upload Personalizado")
-    uploaded_file = st.file_uploader(
-        "Carregar Knowledge Graph (JSON)",
-        type=['json'],
-        help="Faça upload de um arquivo JSON com seu próprio grafo"
-    )
-    
-    if uploaded_file and st.button("📥 Processar Upload"):
-        try:
-            data = json.load(uploaded_file)
-            kg = KnowledgeGraph()
-            kg.load_from_file(uploaded_file.name)
-            st.session_state.kg = kg
-            
-            if api_key:
-                st.session_state.rag_system = GraphRAGSystem(kg)
-                st.session_state.query_processor = GraphQueryProcessor(kg)
-            
-            st.success("✅ Arquivo carregado!")
+            success = False
+            try:
+                loader = StarWarsDataLoader()
+                st.session_state.kg = loader.create_sample_data()
+                
+                if api_key:
+                    # Inicializar RAG system sem criar conexões assíncronas imediatamente
+                    st.session_state.rag_system = GraphRAGSystem(st.session_state.kg)
+                    st.session_state.query_processor = GraphQueryProcessor(st.session_state.kg)
+                    st.success("Dados carregados com sucesso! LLM configurado.")
+                else:
+                    st.success("Dados carregados com sucesso! (Sem LLM - adicione API key para consultas em linguagem natural)")
+                
+                success = True
+                    
+            except Exception as e:
+                st.error(f"Erro ao carregar dados: {str(e)}")
+                st.error("Verifique se sua API key está correta e tente novamente.")
+                
+        if success:
             st.rerun()
-        except Exception as e:
-            st.error(f"❌ Erro ao carregar arquivo: {e}")
+    
+
 
 # Conteúdo principal
 if st.session_state.kg is None:
-    st.info("👈 Use a barra lateral para carregar os dados do Knowledge Graph")
+    st.info("Use a barra lateral para carregar os dados do Knowledge Graph")
     
     # Mostrar informações sobre o projeto
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown('<h2 class="sub-header">🎯 Objetivo do Projeto</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">Objetivo do Projeto</h2>', unsafe_allow_html=True)
         st.markdown("""
         Este projeto demonstra como criar um **Knowledge Graph** usando **NetworkX** 
         como alternativa ao Neo4j, integrado com **LangChain** para consultas em 
         linguagem natural.
         
         **Características:**
-        - 🔗 Modelagem de entidades e relacionamentos
-        - 🤖 Consultas via LLM com RAG
-        - 📊 Visualizações interativas
-        - 🔍 Busca semântica
-        - 📈 Análise de grafos
+        - Modelagem de entidades e relacionamentos
+        - Consultas via LLM com RAG
+        - Visualizações interativas
+        - Busca semântica
+        - Análise de grafos
         """)
     
     with col2:
-        st.markdown('<h2 class="sub-header">🛠️ Tecnologias Utilizadas</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">Tecnologias Utilizadas</h2>', unsafe_allow_html=True)
         st.markdown("""
         **Core:**
         - NetworkX (alternativa ao Neo4j)
@@ -146,78 +136,98 @@ if st.session_state.kg is None:
         """)
         
 else:
+    # Input global do chat (fora das tabs para evitar erro do Streamlit)
+    chat_prompt = None
+    if api_key:
+        chat_prompt = st.chat_input("Faça uma pergunta sobre Star Wars...")
+    
     # Tabs principais
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
-        "🤖 Chat com IA", 
-        "📊 Estatísticas", 
-        "🔍 Explorar Grafo", 
-        "📈 Visualização", 
-        "⚙️ Consultas Avançadas"
+        "Chat com IA",
+        "Estatísticas",
+        "Explorar Grafo",
+        "Visualização",
+        "Consultas Avançadas"
     ])
     
     with tab1:
-        st.markdown('<h2 class="sub-header">💬 Consultas em Linguagem Natural</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">Consultas em Linguagem Natural</h2>', unsafe_allow_html=True)
         
         if not api_key:
-            st.warning("⚠️ Configure sua Google API Key na barra lateral para usar o chat")
+            st.warning("Configure sua Google API Key na barra lateral para usar o chat")
         else:
             # Interface de chat
             if 'messages' not in st.session_state:
                 st.session_state.messages = []
+            
+            # Processar input do chat se houver
+            if chat_prompt:
+                prompt = chat_prompt
+                # Adicionar mensagem do usuário
+                st.session_state.messages.append({"role": "user", "content": prompt})
             
             # Mostrar histórico de mensagens
             for message in st.session_state.messages:
                 with st.chat_message(message["role"]):
                     st.markdown(message["content"])
             
-            # Input do usuário
-            if prompt := st.chat_input("Faça uma pergunta sobre Star Wars..."):
-                # Adicionar mensagem do usuário
-                st.session_state.messages.append({"role": "user", "content": prompt})
+            # Processar nova mensagem se houver
+            if chat_prompt:
                 with st.chat_message("user"):
-                    st.markdown(prompt)
+                    st.markdown(chat_prompt)
                 
                 # Gerar resposta
                 with st.chat_message("assistant"):
                     with st.spinner("Pensando..."):
                         try:
-                            result = st.session_state.rag_system.query(prompt)
+                            result = st.session_state.rag_system.query(chat_prompt)
+                            
+                            # Adicionar resposta ao histórico
+                            response_content = result["answer"]
+                            st.session_state.messages.append({"role": "assistant", "content": response_content})
                             
                             # Mostrar resposta
-                            st.markdown(result["answer"])
+                            st.markdown(response_content)
                             
                             # Mostrar confiança
                             confidence = result["confidence"]
                             if confidence > 0.7:
-                                st.success(f"🎯 Confiança: {confidence:.1%}")
+                                st.success(f"Confiança: {confidence:.1%}")
                             elif confidence > 0.4:
-                                st.warning(f"⚠️ Confiança: {confidence:.1%}")
+                                st.warning(f"Confiança: {confidence:.1%}")
                             else:
-                                st.error(f"❌ Confiança baixa: {confidence:.1%}")
+                                st.error(f"Confiança baixa: {confidence:.1%}")
                             
                             # Mostrar entidades mencionadas
                             if result["mentioned_entities"]:
-                                with st.expander("🔗 Entidades Relacionadas"):
+                                with st.expander("Entidades Relacionadas"):
                                     for entity in result["mentioned_entities"]:
                                         st.write(f"- {entity}")
                             
                             # Sugerir perguntas relacionadas
-                            suggestions = st.session_state.rag_system.suggest_related_questions(prompt)
-                            if suggestions:
-                                with st.expander("💡 Perguntas Sugeridas"):
-                                    for suggestion in suggestions:
-                                        if st.button(suggestion, key=f"suggestion_{hash(suggestion)}"):
-                                            st.session_state.messages.append({"role": "user", "content": suggestion})
-                                            st.rerun()
-                            
-                            # Adicionar resposta ao histórico
-                            st.session_state.messages.append({"role": "assistant", "content": result["answer"]})
+                            try:
+                                suggestions = st.session_state.rag_system.suggest_related_questions(chat_prompt)
+                                if suggestions:
+                                    with st.expander("Perguntas Sugeridas"):
+                                        for suggestion in suggestions:
+                                            if st.button(suggestion, key=f"suggestion_{hash(suggestion)}"):
+                                                st.session_state.messages.append({"role": "user", "content": suggestion})
+                                                st.rerun()
+                            except Exception:
+                                pass  # Sugestões são opcionais
                             
                         except Exception as e:
-                            st.error(f"❌ Erro: {e}")
+                            error_msg = str(e)
+                            if "event loop" in error_msg.lower():
+                                st.error("Erro de configuração do LLM. Tente recarregar a página e configurar novamente.")
+                            elif "api" in error_msg.lower() or "key" in error_msg.lower():
+                                st.error("Erro na API Key. Verifique se sua chave do Google Gemini está correta.")
+                            else:
+                                st.error(f"Erro: {error_msg}")
+                            st.info("Dica: Tente usar as funcionalidades básicas do grafo na aba 'Explorar Grafo'")
             
             # Exemplos de perguntas
-            with st.expander("💡 Exemplos de Perguntas"):
+            with st.expander("Exemplos de Perguntas"):
                 examples = [
                     "Quem é o pai de Luke Skywalker?",
                     "Quais planetas aparecem na saga?",
@@ -233,7 +243,7 @@ else:
                         st.rerun()
     
     with tab2:
-        st.markdown('<h2 class="sub-header">📊 Estatísticas do Knowledge Graph</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">Estatísticas do Knowledge Graph</h2>', unsafe_allow_html=True)
         
         stats = st.session_state.kg.get_statistics()
         
@@ -241,20 +251,20 @@ else:
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.metric("🔗 Total de Entidades", stats['total_entities'])
+            st.metric("Total de Entidades", stats['total_entities'])
         with col2:
-            st.metric("↔️ Total de Relacionamentos", stats['total_relationships'])
+            st.metric("Total de Relacionamentos", stats['total_relationships'])
         with col3:
-            st.metric("🌐 Densidade do Grafo", f"{stats['density']:.3f}")
+            st.metric("Densidade do Grafo", f"{stats['density']:.3f}")
         with col4:
-            conectado = "✅ Sim" if stats['is_connected'] else "❌ Não"
-            st.metric("🔗 Conectado", conectado)
+            conectado = "Sim" if stats['is_connected'] else "Não"
+            st.metric("Conectado", conectado)
         
         # Distribuição por tipos
         col1, col2 = st.columns(2)
         
         with col1:
-            st.subheader("📋 Tipos de Entidades")
+            st.subheader("Tipos de Entidades")
             entity_df = pd.DataFrame(
                 list(stats['entity_types'].items()),
                 columns=['Tipo', 'Quantidade']
@@ -271,7 +281,7 @@ else:
             st.plotly_chart(fig_entities, use_container_width=True)
         
         with col2:
-            st.subheader("🔗 Tipos de Relacionamentos")
+            st.subheader("Tipos de Relacionamentos")
             rel_df = pd.DataFrame(
                 list(stats['relationship_types'].items()),
                 columns=['Tipo', 'Quantidade']
@@ -292,29 +302,29 @@ else:
             st.plotly_chart(fig_rels, use_container_width=True)
         
         # Validação dos dados
-        st.subheader("✅ Validação dos Dados")
+        st.subheader("Validação dos Dados")
         validation = DataValidator.validate_graph(st.session_state.kg)
         
         if validation['valid']:
-            st.success("✅ Grafo válido - sem problemas detectados")
+            st.success("Grafo válido - sem problemas detectados")
         else:
-            st.error("❌ Problemas encontrados no grafo:")
+            st.error("Problemas encontrados no grafo:")
             for issue in validation['issues']:
                 st.write(f"- {issue}")
         
         if validation['warnings']:
-            st.warning("⚠️ Avisos:")
+            st.warning("Avisos:")
             for warning in validation['warnings']:
                 st.write(f"- {warning}")
     
     with tab3:
-        st.markdown('<h2 class="sub-header">🔍 Explorar Entidades e Relacionamentos</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">Explorar Entidades e Relacionamentos</h2>', unsafe_allow_html=True)
         
         # Busca de entidades
         col1, col2 = st.columns([2, 1])
         
         with col1:
-            search_query = st.text_input("🔍 Buscar entidades:", placeholder="Digite o nome de uma entidade...")
+            search_query = st.text_input("Buscar entidades:", placeholder="Digite o nome de uma entidade...")
         
         with col2:
             entity_types = list(set(entity.type for entity in st.session_state.kg.entities.values()))
@@ -325,10 +335,10 @@ else:
             results = st.session_state.kg.search_entities(search_query, filter_type)
             
             if results:
-                st.success(f"✅ Encontradas {len(results)} entidades")
+                st.success(f"Encontradas {len(results)} entidades")
                 
                 for entity in results:
-                    with st.expander(f"🔗 {entity.id} ({entity.type})"):
+                    with st.expander(f"{entity.id} ({entity.type})"):
                         # Propriedades da entidade
                         st.write("**Propriedades:**")
                         for key, value in entity.properties.items():
@@ -343,10 +353,10 @@ else:
                                 if neighbor_entity:
                                     st.write(f"- {neighbor} ({neighbor_entity.type})")
             else:
-                st.info("🔍 Nenhuma entidade encontrada")
+                st.info("Nenhuma entidade encontrada")
         
         # Lista todas as entidades
-        st.subheader("📋 Todas as Entidades")
+        st.subheader("Todas as Entidades")
         
         entities_data = []
         for entity in st.session_state.kg.entities.values():
@@ -361,7 +371,7 @@ else:
         st.dataframe(entities_df, use_container_width=True)
     
     with tab4:
-        st.markdown('<h2 class="sub-header">📈 Visualização do Knowledge Graph</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">Visualização do Knowledge Graph</h2>', unsafe_allow_html=True)
         
         # Opções de visualização
         col1, col2, col3 = st.columns(3)
@@ -383,7 +393,7 @@ else:
             )
         
         # Gerar visualização
-        if st.button("🎨 Gerar Visualização", use_container_width=True):
+        if st.button("Gerar Visualização", use_container_width=True):
             with st.spinner("Gerando visualização..."):
                 try:
                     # Filtrar entidades se necessário
@@ -401,10 +411,10 @@ else:
                     st.plotly_chart(fig, use_container_width=True)
                     
                 except Exception as e:
-                    st.error(f"❌ Erro na visualização: {e}")
+                    st.error(f"Erro na visualização: {e}")
         
         # Análise de caminhos
-        st.subheader("🛤️ Análise de Caminhos")
+        st.subheader("Análise de Caminhos")
         
         col1, col2 = st.columns(2)
         
@@ -416,23 +426,23 @@ else:
         with col2:
             target_entity = st.selectbox("Entidade de destino:", entity_ids, key="target")
         
-        if st.button("🔍 Encontrar Caminho") and source_entity != target_entity:
+        if st.button("Encontrar Caminho") and source_entity != target_entity:
             path_result = st.session_state.query_processor.find_shortest_path(source_entity, target_entity)
             
             if path_result["exists"]:
-                st.success(f"✅ Caminho encontrado! Distância: {path_result['length']} passos")
+                st.success(f"Caminho encontrado! Distância: {path_result['length']} passos")
                 
                 st.write("**Caminho:**")
                 for i, step in enumerate(path_result["path_details"]):
                     st.write(f"{i+1}. {step['from']} --[{step['relationship']}]--> {step['to']}")
             else:
-                st.warning("⚠️ Nenhum caminho encontrado entre essas entidades")
+                st.warning("Nenhum caminho encontrado entre essas entidades")
     
     with tab5:
-        st.markdown('<h2 class="sub-header">⚙️ Consultas Avançadas</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="sub-header">Consultas Avançadas</h2>', unsafe_allow_html=True)
         
         # Consultas estruturadas
-        st.subheader("🔧 Consultas Estruturadas")
+        st.subheader("Consultas Estruturadas")
         
         query_type = st.selectbox(
             "Tipo de consulta:",
@@ -447,7 +457,7 @@ else:
         if query_type == "Buscar por tipo de entidade":
             selected_entity_type = st.selectbox("Selecione o tipo:", entity_types)
             
-            if st.button("🔍 Executar Busca"):
+            if st.button("Executar Busca"):
                 results = [
                     entity for entity in st.session_state.kg.entities.values()
                     if entity.type == selected_entity_type
@@ -461,7 +471,7 @@ else:
             rel_types = list(set(rel.type for rel in st.session_state.kg.relationships))
             selected_rel_type = st.selectbox("Selecione o tipo de relacionamento:", rel_types)
             
-            if st.button("🔍 Executar Busca"):
+            if st.button("Executar Busca"):
                 results = [
                     rel for rel in st.session_state.kg.relationships
                     if rel.type == selected_rel_type
@@ -472,7 +482,7 @@ else:
                     st.write(f"- {rel.source} --[{rel.type}]--> {rel.target}")
         
         elif query_type == "Entidades mais conectadas":
-            if st.button("📊 Analisar Conectividade"):
+            if st.button("Analisar Conectividade"):
                 connectivity = {}
                 for entity_id in st.session_state.kg.entities.keys():
                     connectivity[entity_id] = len(st.session_state.kg.get_neighbors(entity_id))
@@ -486,52 +496,11 @@ else:
                     name = entity.properties.get('name', entity_id) if entity else entity_id
                     st.write(f"{i}. **{name}** ({entity_id}): {connections} conexões")
         
-        # Exportar dados
-        st.subheader("💾 Exportar Dados")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if st.button("📥 Baixar como JSON"):
-                # Preparar dados para download
-                data = {
-                    'entities': {
-                        eid: {
-                            'type': entity.type,
-                            'properties': entity.properties
-                        } for eid, entity in st.session_state.kg.entities.items()
-                    },
-                    'relationships': [
-                        {
-                            'source': rel.source,
-                            'target': rel.target,
-                            'type': rel.type,
-                            'properties': rel.properties
-                        } for rel in st.session_state.kg.relationships
-                    ]
-                }
-                
-                st.download_button(
-                    label="📁 Download JSON",
-                    data=json.dumps(data, indent=2, ensure_ascii=False),
-                    file_name="knowledge_graph.json",
-                    mime="application/json"
-                )
-        
-        with col2:
-            if st.button("📊 Baixar Estatísticas"):
-                stats = st.session_state.kg.get_statistics()
-                
-                st.download_button(
-                    label="📈 Download Estatísticas",
-                    data=json.dumps(stats, indent=2, ensure_ascii=False),
-                    file_name="graph_statistics.json",
-                    mime="application/json"
-                )
+
 
 # Footer
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: #666;'>🌌 Knowledge Graph Star Wars - Projeto de Algoritmos Avançados</p>",
+    "<p style='text-align: center; color: #666;'>Knowledge Graph Star Wars - Projeto de Algoritmos Avançados</p>",
     unsafe_allow_html=True
 )
